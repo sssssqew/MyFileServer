@@ -157,7 +157,7 @@ if (!empty($_GET['id'])) {
                     <?php //echo '</br>'; ?>    
                 <div>
                 <form method="POST" action="musicProcess.php?mmode=minsert" enctype="multipart/form-data">
-                        <input type="hidden" name="MAX_FILE_SIZE" value="10000000" />
+                        <input type="hidden" name="MAX_FILE_SIZE" value="20000000" />
                         <input type="hidden" name="id" value="<?php echo $topic['id']?>"/>
                         <input type="file" name="userfile" />
                         <input type="submit" value="음악 업로드"/>
@@ -191,7 +191,7 @@ if (!empty($_GET['id'])) {
                            <input type="submit" value="음악 삭제"/>
                       </form>
                       <form method="POST" action="musicProcess.php?mmode=mupdate" enctype="multipart/form-data">
-                           <input type="hidden" name="MAX_FILE_SIZE" value="10000000"/>
+                           <input type="hidden" name="MAX_FILE_SIZE" value="20000000"/>
                            <input type="hidden" name="id" value="<?php echo $musicSelected['id']?>"/>
                            <input type="file" name="userfile" />
                            <input type="submit" value="음악 변경"/>
