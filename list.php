@@ -1,4 +1,5 @@
 <?php
+
 mysql_connect('localhost','root','111111');
 mysql_select_db('member');
 
@@ -30,14 +31,20 @@ if(!empty($_GET['id'])){
             float: left;
             margin-right: 10px;
             min-height: 1500px;
-            min-width: 150px;
+            min-width: 50px;
             border-right: 1px solid #ccc;
             padding-right: 0;
          }
          nav ul {
             list-style: none;
             padding-left: 0;
-            padding-right: 20px;
+            padding-right: 50px;
+         }
+         nav ul a{
+            color: perple;
+         }
+         nav ul a:hover{
+            color: orange;
          }
          article {
             float: middle;
@@ -45,6 +52,20 @@ if(!empty($_GET['id'])){
          .age {
             width: 500px;
          }
+         form {
+            float:  middle;
+         
+            margin-left: 140px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            width: 400px;
+            padding: 0.8em;
+            padding-bottom: 7px;
+            padding-top: 7px;
+            border:1px solid #ccc;
+            border-radius: 0.7em;
+         }
+         
       </style>
       </head>
       <body>
@@ -66,47 +87,54 @@ if(!empty($_GET['id'])){
                 <h2><?php echo "AGE :  ".htmlspecialchars($topic['age'])?></h2>
                 </div>
                 <div>
-                    <a href="modify.php?id=<?php echo $topic['id']?>">수정</a>
+                    <h2><a href="modify.php?id=<?php echo $topic['id']?>">수정</a></h2>
                     <form method="POST" action="process.php?mode=delete">
                         <input type="hidden" name="id" value="<?php echo $topic['id']?>"/>
                         <input type="submit" value="삭제"/>
                     </form>
-                    <form method="POST" action="imageProcess.php?iinsert" enctype="multipart/form-data">
-                        <input type="hidden" name="MAX_FILE_SIZE" value="1000000000" />
+                    <form method="POST" action="imageProcess.php?imode=iinsert" enctype="multipart/form-data">
+                        <input type="hidden" name="MAX_FILE_SIZE" value="8000000" />
                         <input type="hidden" name="id" value="<?php echo $topic['id']?>"/>
                         <input type="file" name="userfile" />
-                        <input type="submit" value="업로드"/>
+                        <input type="submit" value="사진 업로드"/>
                     </form>
             
-                    <?php
-                   
-                      if(!empty($_GET['fn'])){
-                        if($_GET['up'] == TRUE){
-                          echo "<h2>파일 [ {$_GET['fn']} ]이 성공적으로 업로드 되었습니다.</h2>";
-                        }else{
-                          echo "<h2>파일 [ {$_GET['fn']} ]을 로딩하는데 실패하였습니다.</h2>";
-                        }
-                      }
-                    ?>
+           
                     
                     
                     
                </div>
                <div>
-               <?php 
-               if(!empty($imgSelected)){
+               <?php
+                 
+                 if($imgSelected == TRUE and file_exists($imgSelected['imgPath'])==TRUE){
+                      echo "<h2> 사진 [ {$imgSelected['imgName']} ] 이 성공적으로 업로드 되었습니다.</h2>";
+               ?> 
+               <div>
+                      <img src="<?php echo $imgSelected['imgName']?>" width="490" height="300"/>
+                      <form method="POST" action="imageProcess.php?imode=idelete">
+                           <input type="hidden" name="id" value="<?php echo $imgSelected['id']?>"/>
+                           <input type="submit" value="사진 삭제"/>
+                      </form>
+                      <form method="POST" action="imageProcess.php?imode=iupdate" enctype="multipart/form-data">
+                           <input type="hidden" name="MAX_FILE_SIZE" value="8000000"/>
+                           <input type="hidden" name="id" value="<?php echo $imgSelected['id']?>"/>
+                           <input type="file" name="userfile" />
+                           <input type="submit" value="사진 변경"/>
+                      </form>
+               </div>
+               <?php       
+                   }else{
+                      echo "<h2> 사진을 업로드하지 않았거나 성공적으로 삭제되어서 존재하지 않습니다. </h2>";
+                   }
                ?>
-               <img src="<?php echo $imgSelected['imgName']?>" width="490" height="300"/>
-               <form method="POST" action="imageProcess.php?mode=idelete" >
-                     <input type="hidden" name="id" value=<?php echo $imgSelected['id']?>/>
-                     <input type="submit" value="사진 삭제"/>
-               </form>
-               <?php } ?>
+			   
                </div>
                 <?php
-                }else{
-                  echo "<h2>데이터가 삭제되어서 로딩할 수 없습니다.</h2>";
                 }
+                /*}else{
+                  echo "<h2>데이터가 삭제되어서 로딩할 수 없습니다.</h2>";
+                }*/
                 ?>
             </article>
       </body>
