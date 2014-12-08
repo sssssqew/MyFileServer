@@ -6,6 +6,7 @@ mysql_query("set session character_set_connection=utf8;");
 mysql_query("set session character_set_results=utf8;");
 mysql_query("set session character_set_client=utf8;");
 
+/* mysql_real_escape_string : 데이터 입력시 보안문제 해결 */
 switch($_GET['mode']){
        case 'insert':
           mysql_query("INSERT INTO memInfo (name,age) VALUES ('".$_POST['memName']."','".mysql_real_escape_string($_POST['memAge'])."')");
