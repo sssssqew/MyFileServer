@@ -152,12 +152,7 @@ if (!empty($_GET['id'])) {
 			   
                </div>
                
-                <?php
-				}
-				/*}else{
-				echo "<h2>데이터가 삭제되어서 로딩할 수 없습니다.</h2>";
-				}*/
-                    ?>
+            
                 <hr size="1" align="left" width="80%" />
                     <?php //echo '</br>'; ?>    
                 <div>
@@ -209,7 +204,12 @@ if (!empty($_GET['id'])) {
                    ?>
 			   
                </div>
-                    
+                  <?php
+				}
+				/*}else{
+				echo "<h2>데이터가 삭제되어서 로딩할 수 없습니다.</h2>";
+				}*/
+                    ?>        
             </article>
       </body>
 </html>
