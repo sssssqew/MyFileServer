@@ -1,4 +1,7 @@
 <?php
+/* 세션 시작 */
+session_start();
+
 /* 서버접속 및 DB 선택 */
 mysql_connect('localhost', 'root', '111111');
 mysql_select_db('member');
@@ -84,6 +87,11 @@ if (!empty($_GET['id'])) {
       </head>
 <!--------------------------- 바디 영역 --------------------------------->      
       <body>
+            <header>
+               <?php if(isset($_SESSION['is_login'])){ ?>
+                <h1> Welcome to my homepage , <?php echo $_SESSION['nickname']; ?> </h1> 
+               <?php } ?>
+            </header>
             <nav>
                  <ul>
                 <?php
@@ -92,7 +100,9 @@ if (!empty($_GET['id'])) {
 						echo "<h3><li><a href=\"?id={$row['id']}\">" . htmlspecialchars($row['name']) . "</a></li></h3>";
 					}
                     ?>
-                 </ui>
+                 </ul>
+                 <br/>
+                 <a href="./logout.php">logout</a>
             </nav>
             <article>
             	    <!-- 본문내용 출력 -->
