@@ -39,7 +39,7 @@ if (!empty($_GET['id'])) {
       <style>
 		body {
 			font-size: 0.8em;
-			font-family: dotum;
+			font-family: sans-serif;
 			line-height: 1.6em;
 		}
 		nav {
@@ -56,10 +56,13 @@ if (!empty($_GET['id'])) {
 			padding-right: 25px;
 		}
 		nav ul a {
-			color: perple;
+			color: white;
+                        text-decoration: none;
+
 		}
 		nav ul a:hover {
 			color: orange;
+                        text-decoration: none;
 		}
 		article {
 			float: middle;
@@ -86,12 +89,12 @@ if (!empty($_GET['id'])) {
 		hr {
 			border-bottom: 5px solid #ccc;
 		}
-                .row div, .row-fluid div {
+                /*.row div, .row-fluid div {
                         background-color: #f0ffff;
-                }
+                }*/
                 .Well {
                         border-bottom: 1px solid #ccc;
-                        padding-left: 350px;
+                        padding-left: 150px;
                         padding-top: 20px;
                         padding-bottom: 20px;
                 }
@@ -102,25 +105,29 @@ if (!empty($_GET['id'])) {
       </head>
 <!--------------------------- 바디 영역 --------------------------------->      
       <body>
+      <?php if(isset($_SESSION['is_login'])){ ?>
             <header>
-               <?php if(isset($_SESSION['is_login'])){ ?>
                 <h1 class="Well">Welcome to my homepage , <?php echo $_SESSION['nickname']; ?> !! </h1> 
-               <?php } ?>
             </header>
             <nav>
                  <ul>
                 <?php
                     /* 네비게이션 목록 출력 */
 					while ($row = mysql_fetch_array($list_result)) {
-						echo "<h3><li><a href=\"?id={$row['id']}\">" . htmlspecialchars($row['name']) . "</a></li></h3>";
+						echo "<li><h4><span class=\"label label-inverse\"><a href=\"?id={$row['id']}\">".htmlspecialchars($row['name'])."</a></span></h4></li>";
 					}
-                    ?>
+                ?>
                  </ul>
                  <br/>
                  <h4><a href="./input.php">목록추가</a></h4>
-                 <h4><a href="./logout.php">logout</a></h4>
+                 <form action="./logout.php">
+                       <button class="btn-primary" type="submit">logout</button>
+                 </form>
             </nav>
             <article>
+            <?php if(empty($_GET['id'])){ ?>
+            <img src="ridebarstow.jpg" width="800" height="300"/>
+            <?php } ?>
             	    <!-- 본문내용 출력 -->
                 <?php
                 if(!empty($topic)){
@@ -168,8 +175,8 @@ if (!empty($_GET['id'])) {
                     <form method="POST" action="imageProcess.php?imode=iinsert" enctype="multipart/form-data">
                         <input type="hidden" name="MAX_FILE_SIZE" value="8000000" />
                         <input type="hidden" name="id" value="<?php echo $topic['id']?>"/>
-                        <input type="file" name="userfile" />
-                        <input type="submit" value="사진 업로드"/>
+                        <input type="file" name="userfile" />               
+		        <button class="btn btn-small btn-file">사진 업로드</button>
                     </form>
               
                
@@ -180,7 +187,7 @@ if (!empty($_GET['id'])) {
                      // echo "<h2> 사진 [ {$imgSelected['imgName']} ] 이 성공적으로 업로드 되었습니다.</h2>";
                ?> 
               
-                      <img src="<?php echo $imgSelected['imgName']?>" width="324" height="200"/>
+                      <img src="<?php echo $imgSelected['imgName']?>" width="380" height="226"/>
                       <form method="POST" action="imageProcess.php?imode=idelete">
                            <input type="hidden" name="id" value="<?php echo $imgSelected['id']?>"/>
                            <input type="submit" value="사진 삭제"/>
@@ -192,12 +199,13 @@ if (!empty($_GET['id'])) {
                            <input type="submit" value="사진 변경"/>
                       </form>
               
-               
-               <?php
+                            <?php
 				}else{
-				echo "<h3> 사진을 업로드하지 않았거나 성공적으로 삭제되어서 존재하지 않습니다. </h3>";
+                                echo "<div class=\"alert alert-error\">";
+                                echo "<button class=\"close\" data-dismiss=\"alert\">&times;</button>"; 
+				echo "<strong>주의: </strong>사진을 아직 업로드하지 않았거나 성공적으로 삭제하였습니다!";                                echo "</div>";
 				}
-               ?>
+                            ?>
 			   
                </div>   
                
@@ -225,7 +233,7 @@ if (!empty($_GET['id'])) {
                                   <!--초기 볼륨설정-->
                            <script type="text/javascript">
 							        player = document.getElementById("player");
-							        player.volume = 0.6;
+							        player.volume = 0.5;
                            </script>
                            
                    
@@ -242,7 +250,10 @@ if (!empty($_GET['id'])) {
               
                <?php
 				}else{
-				echo "<h3> 음악을 업로드하지 않았거나 성공적으로 삭제되어서 존재하지 않습니다. </h3>";
+                                echo "<div class=\"alert alert-error\">";
+                                echo "<button class=\"close\" data-dismiss=\"alert\">&times;</button>";
+				echo "<strong>주의: </strong>노래를 업로드하지 않았거나 성공적으로 삭제하였습니다!";
+                                echo "</div>";
 				}
                ?>
 			   
@@ -261,6 +272,7 @@ if (!empty($_GET['id'])) {
             </article>
             <script src="http://code.jquery.com/jquery-latest.js"></script>
             <script src="../Bootstrap/js/bootstrap.min.js"></script>
+      <?php } ?>
       </body>
 </html>
 
