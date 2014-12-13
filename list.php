@@ -35,6 +35,7 @@ if (!empty($_GET['id'])) {
 <!------------------------헤더영역 ------------------------>
       <head>
             <meta charset="utf-8"/>
+            <link href="../Bootstrap/css/bootstrap.min.css" rel="stylesheet">
       <style>
 		body {
 			font-size: 0.8em;
@@ -52,7 +53,7 @@ if (!empty($_GET['id'])) {
 		nav ul {
 			list-style: none;
 			padding-left: 0;
-			padding-right: 50px;
+			padding-right: 25px;
 		}
 		nav ul a {
 			color: perple;
@@ -66,12 +67,15 @@ if (!empty($_GET['id'])) {
 		.age {
 			width: 500px;
 		}
-		form {
+                form{
+                        margin-top: 10px;
+                }
+	        .container-fluid div form {
 			float: middle;
-			margin-left: 140px;
+			margin-left: 0px;
 			margin-top: 10px;
 			margin-bottom: 10px;
-			width: 350px;
+			width: 370px;
 			padding: 0.8em;
 			padding-bottom: 7px;
 			padding-top: 7px;
@@ -82,14 +86,25 @@ if (!empty($_GET['id'])) {
 		hr {
 			border-bottom: 5px solid #ccc;
 		}
+                .row div, .row-fluid div {
+                        background-color: #f0ffff;
+                }
+                .Well {
+                        border-bottom: 1px solid #ccc;
+                        padding-left: 350px;
+                        padding-top: 20px;
+                        padding-bottom: 20px;
+                }
 
       </style>
+      <!--meta name="viewport" content="width=device-width, initial-scale=1.0"-->
+      <!--link href="../Bootstrap/css/bootstrap-responsive.css" rel="stylesheet"-->     
       </head>
 <!--------------------------- 바디 영역 --------------------------------->      
       <body>
             <header>
                <?php if(isset($_SESSION['is_login'])){ ?>
-                <h1> Welcome to my homepage , <?php echo $_SESSION['nickname']; ?> </h1> 
+                <h1 class="Well">Welcome to my homepage , <?php echo $_SESSION['nickname']; ?> !! </h1> 
                <?php } ?>
             </header>
             <nav>
@@ -102,29 +117,53 @@ if (!empty($_GET['id'])) {
                     ?>
                  </ul>
                  <br/>
-                 <a href="./logout.php">logout</a>
+                 <h4><a href="./input.php">목록추가</a></h4>
+                 <h4><a href="./logout.php">logout</a></h4>
             </nav>
             <article>
             	    <!-- 본문내용 출력 -->
                 <?php
                 if(!empty($topic)){
-                    ?>
+                ?>
                 <div>
-                <h2><?php echo "NAME :  ".htmlspecialchars($topic['name'])?></h2>
-                <h2><?php echo "AGE :  ".htmlspecialchars($topic['age'])?></h2>
+                <h3><?php echo "NAME :  ".htmlspecialchars($topic['name'])?></h3>
+                <h3><?php echo "AGE :  ".htmlspecialchars($topic['age'])?></h3>
                 </div>
-                                 
-                <div>
+             <form method="POST" action="process.php?mode=delete">                    
+                <div class="form-group">
+                    <div class="btn-group">
+                       <button class="btn btn-danger" type="submit">삭제</button>
+                       <button class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
+                            <span class="caret"></span>
+                       </button>
+                       <ul class="dropdown-menu">
                 	     <!-- 수정페이지 링크 -->
-                    <h2><a href="modify.php?id=<?php echo $topic['id']?>">수정</a></h2>
-                         <!-- 본문내용 삭제 -->
-                    <form method="POST" action="process.php?mode=delete">
-                        <input type="hidden" name="id" value="<?php echo $topic['id']?>"/>
-                        <input type="submit" value="삭제"/>
-                    </form>
-                         <!-- 구분선 표시 -->
-                    <hr size="1" align="left" width="80%" />
-                         <?php //echo '</br>'; ?>
+                             <li><a tabindex="-1" href="modify.php?id=<?php echo $topic['id']?>">revise</a></li>
+                             <li><a tabindex="-1" href="#">Action</a></li>
+                             <li class="divider"></li>
+                             <li><a tabindex="-1" href="#">Separated link</a></li>
+                             <li class="dropdown-submenu">
+                                 <a tabindex="-1" href="#">More options</a>
+                                 <ul class="dropdown-menu">
+                                     <li><a tabindex="-1" href="#">option 1</a><li>
+                                     <li><a tabindex="-1" href="#">option 2</a><li>
+                                     <li><a tabindex="-1" href="#">option 3</a><li>
+                                 </ul>
+                             </li>
+                       </ul>
+                    </div>
+                    <div>
+                        <!-- 본문내용 삭제 -->
+                        <input type="hidden" name="id" value="<?php echo $topic['id']?>"/>  
+                    </div>
+                </div>
+             </form>
+
+
+         <div class="container-fluid">
+            <div class="row-fluid">
+               <div class="span5">
+
                          <!-- 사진 업로드 폼 생성 -->
                     <form method="POST" action="imageProcess.php?imode=iinsert" enctype="multipart/form-data">
                         <input type="hidden" name="MAX_FILE_SIZE" value="8000000" />
@@ -132,15 +171,15 @@ if (!empty($_GET['id'])) {
                         <input type="file" name="userfile" />
                         <input type="submit" value="사진 업로드"/>
                     </form>
-                </div>
+              
                
-               <div>
+            
                <?php
                    /* 파일이 DB와 HDD에 모두 존재시 사진 표시*/
                  if($imgSelected == TRUE and file_exists($imgSelected['imgPath'])==TRUE){
-                      echo "<h2> 사진 [ {$imgSelected['imgName']} ] 이 성공적으로 업로드 되었습니다.</h2>";
-                   ?> 
-               <div>
+                     // echo "<h2> 사진 [ {$imgSelected['imgName']} ] 이 성공적으로 업로드 되었습니다.</h2>";
+               ?> 
+              
                       <img src="<?php echo $imgSelected['imgName']?>" width="324" height="200"/>
                       <form method="POST" action="imageProcess.php?imode=idelete">
                            <input type="hidden" name="id" value="<?php echo $imgSelected['id']?>"/>
@@ -152,35 +191,34 @@ if (!empty($_GET['id'])) {
                            <input type="file" name="userfile" />
                            <input type="submit" value="사진 변경"/>
                       </form>
-               </div>
+              
                
                <?php
 				}else{
-				echo "<h2> 사진을 업로드하지 않았거나 성공적으로 삭제되어서 존재하지 않습니다. </h2>";
+				echo "<h3> 사진을 업로드하지 않았거나 성공적으로 삭제되어서 존재하지 않습니다. </h3>";
 				}
-                   ?>
+               ?>
 			   
-               </div>
+               </div>   
                
-            
-                <hr size="1" align="left" width="80%" />
-                    <?php //echo '</br>'; ?>    
-                <div>
+
+               <div class="span5">
+
                 <form method="POST" action="musicProcess.php?mmode=minsert" enctype="multipart/form-data">
                         <input type="hidden" name="MAX_FILE_SIZE" value="20000000" />
                         <input type="hidden" name="id" value="<?php echo $topic['id']?>"/>
                         <input type="file" name="userfile" />
                         <input type="submit" value="음악 업로드"/>
                 </form>
-                </div>
+               
                 
-               <div>
+               
                <?php
                    /* 파일이 DB와 HDD에 모두 존재시 음악재생 */
                  if($musicSelected == TRUE and file_exists($musicSelected['musicPath'])==TRUE){
-                      echo "<h2> 음악 [ {$musicSelected['musicName']} ] 이 성공적으로 업로드 되었습니다.</h2>";
-                   ?> 
-               <div>
+                     // echo "<h2> 음악 [ {$musicSelected['musicName']} ] 이 성공적으로 업로드 되었습니다.</h2>";
+               ?> 
+               
                       <audio id="player" controls="" preload="" loop="" >
                       	          <source src="<?php echo $musicSelected['musicName']?>" type="audio/mp3"/>
                       </audio> 
@@ -189,13 +227,8 @@ if (!empty($_GET['id'])) {
 							        player = document.getElementById("player");
 							        player.volume = 0.6;
                            </script>
-                            
-                           <!--div>
-                           	      <button onclick="document.getElementById('player').play()">Play</button>
-                           	      <button onclick="document.getElementById('player').pause()">Pause</button>
-                           	      <button onclick="document.getElementById('player').volume += 0.1">Vol+</button>
-                           	      <button onclick="document.getElementById('player').volume -= 0.1">Vol-</button>
-                           </div-->
+                           
+                   
                       <form method="POST" action="musicProcess.php?mmode=mdelete">
                            <input type="hidden" name="id" value="<?php echo $musicSelected['id']?>"/>
                            <input type="submit" value="음악 삭제"/>
@@ -206,21 +239,28 @@ if (!empty($_GET['id'])) {
                            <input type="file" name="userfile" />
                            <input type="submit" value="음악 변경"/>
                       </form>
-               </div>
+              
                <?php
 				}else{
-				echo "<h2> 음악을 업로드하지 않았거나 성공적으로 삭제되어서 존재하지 않습니다. </h2>";
+				echo "<h3> 음악을 업로드하지 않았거나 성공적으로 삭제되어서 존재하지 않습니다. </h3>";
 				}
-                   ?>
+               ?>
 			   
                </div>
+          
+            </div>
+
+           </div>
                   <?php
 				}
 				/*}else{
 				echo "<h2>데이터가 삭제되어서 로딩할 수 없습니다.</h2>";
 				}*/
-                    ?>        
+                  ?>
+            
             </article>
+            <script src="http://code.jquery.com/jquery-latest.js"></script>
+            <script src="../Bootstrap/js/bootstrap.min.js"></script>
       </body>
 </html>
 
