@@ -175,8 +175,11 @@ if (!empty($_GET['id'])) {
                     <form method="POST" action="imageProcess.php?imode=iinsert" enctype="multipart/form-data">
                         <input type="hidden" name="MAX_FILE_SIZE" value="8000000" />
                         <input type="hidden" name="id" value="<?php echo $topic['id']?>"/>
-                        <input type="file" name="userfile" />               
-		        <button class="btn btn-small btn-file">사진 업로드</button>
+                        <label class="btn btn-small" for="my-file-selector1">
+                            <input id="my-file-selector1" type="file" name="userfile" style="display:none;"/>
+                            파일 선택 
+                        </label>               
+		        <button class="btn btn-small btn-warning">사진 업로드</button>
                     </form>
               
                
@@ -190,21 +193,41 @@ if (!empty($_GET['id'])) {
                       <img src="<?php echo $imgSelected['imgName']?>" width="380" height="226"/>
                       <form method="POST" action="imageProcess.php?imode=idelete">
                            <input type="hidden" name="id" value="<?php echo $imgSelected['id']?>"/>
-                           <input type="submit" value="사진 삭제"/>
+                           <button class="btn btn-small btn-danger">사진 삭제</button>
                       </form>
                       <form method="POST" action="imageProcess.php?imode=iupdate" enctype="multipart/form-data">
                            <input type="hidden" name="MAX_FILE_SIZE" value="8000000"/>
                            <input type="hidden" name="id" value="<?php echo $imgSelected['id']?>"/>
-                           <input type="file" name="userfile" />
-                           <input type="submit" value="사진 변경"/>
+                           <label class="btn btn-small" for="my-file-selector2">
+                               <input id="my-file-selector2" type="file" name="userfile" style="display:none;">
+                               파일 선택
+                           </label>
+                           <button class="btn btn-small btn-success">사진 변경</button>    
                       </form>
-              
+                      <!--success message display -->
+                      <div class="alert alert-success">
+                        <button class="close" data-dismiss="alert">&times;</button>
+                        사진을 성공적으로 업로드 하였습니다!
+                      </div> 
                             <?php
 				}else{
-                                echo "<div class=\"alert alert-error\">";
-                                echo "<button class=\"close\" data-dismiss=\"alert\">&times;</button>"; 
-				echo "<strong>주의: </strong>사진을 아직 업로드하지 않았거나 성공적으로 삭제하였습니다!";                                echo "</div>";
-				}
+                            ?>
+                                <!-- Thumbnails -->
+                                <ul class="thumbnails">
+                                  <li class="span5">
+                                    <a href="#" class="thumbnail">
+                                      <img src="http://placehold.it/300x200" alt="">
+                                    </a>
+                                  </li>
+                                </ul>
+               
+                                <!--error message display -->
+                                <div class="alert alert-error">
+                                  <button class="close" data-dismiss="alert">&times;</button> 
+				  <strong>주의: </strong>사진을 아직 업로드하지 않았거나 성공적으로 삭제하였습니다!                                
+                                </div>
+			    <?php
+                         	}
                             ?>
 			   
                </div>   
@@ -216,7 +239,7 @@ if (!empty($_GET['id'])) {
                         <input type="hidden" name="MAX_FILE_SIZE" value="20000000" />
                         <input type="hidden" name="id" value="<?php echo $topic['id']?>"/>
                         <input type="file" name="userfile" />
-                        <input type="submit" value="음악 업로드"/>
+                        <button class="btn btn-small btn-file">음악 업로드</button>
                 </form>
                
                 
@@ -239,35 +262,36 @@ if (!empty($_GET['id'])) {
                    
                       <form method="POST" action="musicProcess.php?mmode=mdelete">
                            <input type="hidden" name="id" value="<?php echo $musicSelected['id']?>"/>
-                           <input type="submit" value="음악 삭제"/>
+                           <button class="btn btn-small btn-file">음악 삭제</button>
                       </form>
                       <form method="POST" action="musicProcess.php?mmode=mupdate" enctype="multipart/form-data">
                            <input type="hidden" name="MAX_FILE_SIZE" value="20000000"/>
                            <input type="hidden" name="id" value="<?php echo $musicSelected['id']?>"/>
                            <input type="file" name="userfile" />
-                           <input type="submit" value="음악 변경"/>
+                           <button class="btn btn-small btn-file">음악 변경</button>
                       </form>
+                      <div class="alert alert-success">
+                        <button class="close" data-dismiss="alert">&times;</button>
+                        노래를 성공적으로 업로드 하였습니다. 
+                      </div>
               
-               <?php
+                      <?php
 				}else{
-                                echo "<div class=\"alert alert-error\">";
-                                echo "<button class=\"close\" data-dismiss=\"alert\">&times;</button>";
-				echo "<strong>주의: </strong>노래를 업로드하지 않았거나 성공적으로 삭제하였습니다!";
-                                echo "</div>";
+                      ?>
+                      <div class="alert alert-error">
+                        <button class="close" data-dismiss="alert">&times;</button>
+		        <strong>주의: </strong>노래를 업로드하지 않았거나 성공적으로 삭제하였습니다!
+                      </div>
+                      <?php
 				}
-               ?>
+                      ?>
 			   
                </div>
           
             </div>
 
            </div>
-                  <?php
-				}
-				/*}else{
-				echo "<h2>데이터가 삭제되어서 로딩할 수 없습니다.</h2>";
-				}*/
-                  ?>
+           <?php } ?>
             
             </article>
             <script src="http://code.jquery.com/jquery-latest.js"></script>
