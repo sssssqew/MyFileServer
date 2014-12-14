@@ -98,7 +98,9 @@ if (!empty($_GET['id'])) {
                         padding-top: 20px;
                         padding-bottom: 20px;
                 }
-
+                /*.label-warning {
+                        color: black;
+                }*/
       </style>
       <!--meta name="viewport" content="width=device-width, initial-scale=1.0"-->
       <!--link href="../Bootstrap/css/bootstrap-responsive.css" rel="stylesheet"-->     
@@ -238,8 +240,12 @@ if (!empty($_GET['id'])) {
                 <form method="POST" action="musicProcess.php?mmode=minsert" enctype="multipart/form-data">
                         <input type="hidden" name="MAX_FILE_SIZE" value="20000000" />
                         <input type="hidden" name="id" value="<?php echo $topic['id']?>"/>
-                        <input type="file" name="userfile" />
-                        <button class="btn btn-small btn-file">음악 업로드</button>
+                        <input type="hidden" name="<?php echo ini_get("session.upload_progress.name"); ?>" value="123" />
+                        <label class="btn btn-small" for="my-file-selector3">
+                            <input id="my-file-selector3" type="file" name="userfile" style="display:none;">
+                            파일 선택 
+                        </label>
+                        <button class="btn btn-small btn-warning">음악 업로드</button>
                 </form>
                
                 
@@ -258,22 +264,29 @@ if (!empty($_GET['id'])) {
 							        player = document.getElementById("player");
 							        player.volume = 0.5;
                            </script>
-                           
-                   
+                      </br>     
+                      <!-- 노래제목 출력 -->
+                      <span class="label"><?php echo $musicSelected['musicName']; ?></span>
                       <form method="POST" action="musicProcess.php?mmode=mdelete">
                            <input type="hidden" name="id" value="<?php echo $musicSelected['id']?>"/>
-                           <button class="btn btn-small btn-file">음악 삭제</button>
+                           <button class="btn btn-small btn-danger">음악 삭제</button>
                       </form>
                       <form method="POST" action="musicProcess.php?mmode=mupdate" enctype="multipart/form-data">
                            <input type="hidden" name="MAX_FILE_SIZE" value="20000000"/>
                            <input type="hidden" name="id" value="<?php echo $musicSelected['id']?>"/>
-                           <input type="file" name="userfile" />
-                           <button class="btn btn-small btn-file">음악 변경</button>
+                           <label class="btn btn-small" for="my-file-selector4">
+                               <input id="my-file-selector4" type="file" name="userfile" style="display:none;">
+                               파일 선택 
+                           </label>
+                           <button class="btn btn-small btn-success">음악 변경</button>
                       </form>
                       <div class="alert alert-success">
                         <button class="close" data-dismiss="alert">&times;</button>
                         노래를 성공적으로 업로드 하였습니다. 
                       </div>
+
+                      <!-- Progress bar -->
+                      <?php echo var_dump($_SESSION['upload_progress_123']); ?>                      
               
                       <?php
 				}else{

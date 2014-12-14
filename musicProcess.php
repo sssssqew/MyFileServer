@@ -15,7 +15,7 @@ switch($_GET['mmode']){
          $uploaddir = "/var/www/memINFO/";
          $uploadfile = $uploaddir.$fileName; 
          move_uploaded_file($_FILES['userfile']['tmp_name'],$uploadfile);
-    
+           
          $sql = "INSERT INTO memMusic (id,musicName,musicPath) VALUES ('".mysql_real_escape_string($_POST['id'])."','".mysql_real_escape_string($fileName)."','".mysql_real_escape_string($uploadfile)."')";
          mysql_query($sql);
          break;
