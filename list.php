@@ -3,27 +3,27 @@
 session_start();
 
 /* 서버접속 및 DB 선택 */
-mysql_connect('localhost', 'root', '111111');
-mysql_select_db('member');
+$conn = mysqli_connect('localhost', 'root', '111111','member') or die("Error ".mysqli_error($conn));
+
 
 /* PHP와 DB 연동시 문자셋 통일 */
-mysql_query("set session character_set_connection=utf8;");
-mysql_query("set session character_set_results=utf8;");
-mysql_query("set session character_set_client=utf8;");
+mysqli_query($conn,"set session character_set_connection=utf8;");
+mysqli_query($conn,"set session character_set_results=utf8;");
+mysqli_query($conn,"set session character_set_client=utf8;");
 
 /* 네비게이션 영역에 DB 목록 출력 */
-$list_result = mysql_query('SELECT * FROM memInfo');
+$list_result = mysqli_query($conn,'SELECT * FROM memInfo');
 
 /* DB에서 모든 테이블 조회 */
 if (!empty($_GET['id'])) {
-	$topic_result = mysql_query('SELECT * FROM memInfo WHERE id = ' . mysql_real_escape_string($_GET['id']));
-	$topic = mysql_fetch_array($topic_result);
+	$topic_result = mysqli_query($conn,'SELECT * FROM memInfo WHERE id = ' . mysqli_real_escape_string($conn,$_GET['id']));
+	$topic = mysqli_fetch_array($topic_result,MYSQLI_BOTH);
 
-	$sql1 = "SELECT * FROM memImg WHERE id = " . mysql_real_escape_string($_GET['id']);
-	$imgSelected = mysql_fetch_array(mysql_query($sql1));
+	$sql1 = "SELECT * FROM memImg WHERE id = " . mysqli_real_escape_string($conn,$_GET['id']);
+	$imgSelected = mysqli_fetch_array(mysqli_query($conn,$sql1),MYSQLI_BOTH);
 
-	$sql2 = "SELECT * FROM memMusic WHERE id = " . mysql_real_escape_string($_GET['id']);
-	$musicSelected = mysql_fetch_array(mysql_query($sql2));
+	$sql2 = "SELECT * FROM memMusic WHERE id = " . mysqli_real_escape_string($conn,$_GET['id']);
+	$musicSelected = mysqli_fetch_array(mysqli_query($conn,$sql2),MYSQLI_BOTH);
 }
 
 ?>
@@ -115,7 +115,7 @@ if (!empty($_GET['id'])) {
                  <ul>
                 <?php
                     /* 네비게이션 목록 출력 */
-					while ($row = mysql_fetch_array($list_result)) {
+					while ($row = mysqli_fetch_array($list_result,MYSQLI_BOTH)) {
 						echo "<li><h4><span class=\"label label-inverse\"><a href=\"?id={$row['id']}\">".htmlspecialchars($row['name'])."</a></span></h4></li>";
 					}
                 ?>
@@ -240,7 +240,7 @@ if (!empty($_GET['id'])) {
                 <form method="POST" action="musicProcess.php?mmode=minsert" enctype="multipart/form-data">
                         <input type="hidden" name="MAX_FILE_SIZE" value="20000000" />
                         <input type="hidden" name="id" value="<?php echo $topic['id']?>"/>
-                        <input type="hidden" name="<?php echo ini_get("session.upload_progress.name"); ?>" value="123" />
+                        <input type="hidden" name="" value="upload" />
                         <label class="btn btn-small" for="my-file-selector3">
                             <input id="my-file-selector3" type="file" name="userfile" style="display:none;">
                             파일 선택 
@@ -286,7 +286,12 @@ if (!empty($_GET['id'])) {
                       </div>
 
                       <!-- Progress bar -->
-                      <?php echo var_dump($_SESSION['upload_progress_123']); ?>                      
+                      <?php echo var_dump($_SESSION['upload_progress_123']); ?>
+  
+                      <div class="progress progress-success">
+                           <div class="bar" style="width: 40%"></div>
+                      </div>
+                      
               
                       <?php
 				}else{

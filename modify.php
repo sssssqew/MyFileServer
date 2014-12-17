@@ -1,13 +1,12 @@
 <?php
- mysql_connect('localhost','root','111111');
- mysql_select_db('member');
+$conn = mysqli_connect('localhost','root','111111','member') or die("Error ".mysqli_error($conn));
 
- mysql_query("set session character_set_connection=utf8;");
- mysql_query("set session character_set_results=utf8;");
- mysql_query("set session character_set_client=utf8;");
+ mysqli_query($conn,"set session character_set_connection=utf8;");
+ mysqli_query($conn,"set session character_set_results=utf8;");
+ mysqli_query($conn,"set session character_set_client=utf8;");
 
- $result = mysql_query('SELECT * FROM memInfo WHERE id = '.mysql_real_escape_string($_GET['id']));
- $topic = mysql_fetch_array($result);
+ $result = mysqli_query($conn,'SELECT * FROM memInfo WHERE id = '.mysqli_real_escape_string($conn,$_GET['id']));
+ $topic = mysqli_fetch_array($result,MYSQLI_BOTH);
 ?>
 <!DOCTYPE html>
 <html>
