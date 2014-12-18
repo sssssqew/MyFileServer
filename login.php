@@ -13,9 +13,33 @@
              <button class="btn btn-small btn-success" type="submit">로그인</button>
           </form>
         </div>
-        <div class="span3">
+        <div class="span6">
           <!-- Button to trigger modal -->
           <a href="#myModal" role="button" class="btn" data-toggle="modal">회원가입</a>
+          </br>   
+          <?php
+          if(!empty($_GET['d'])){
+            if($_GET['d'] == TRUE){
+          ?>
+          <div class="alert">
+             <button class="close" data-dismiss="alert">&times;</button>
+             <strong>경고! </strong>기존에 계정이 존재하므로 다른 계정으로 가입해 주세요.
+          </div>
+          <?php
+            $_GET['d'] = FALSE;
+              }
+          }else if(!empty($_GET['insert'])){
+            if($_GET['insert'] == TRUE){
+          ?>
+          <div class="alert alert-success">
+             <button class="close" data-dismiss="alert">&times;</button>
+             <strong>축하합니다! </strong>회원가입에 성공하였습니다.
+          </div>
+          <?php
+            $_GET['insert'] = FALSE;
+              }
+          }
+          ?> 
           <!-- Modal -->
           <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
              <div class="modal-header">
@@ -38,4 +62,6 @@
           <script src="../Bootstrap/js/bootstrap.min.js"></script>
      </body>
 </html>
+
+
 

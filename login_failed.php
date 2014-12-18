@@ -10,7 +10,7 @@
                  echo '<strong>경고! 로그인에 실패하였습니다. </strong> 아이디와 비밀번호를 다시 확인하세요 !!';
             ?>
       </div>
-      <h3><a href="./login.html">move to login page</a></h3>
+      <h3><a href="./login.php">move to login page</a></h3>
    </body>
 <html>
 

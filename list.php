@@ -45,7 +45,7 @@ if (!empty($_GET['id'])) {
 		nav {
 			float: left;
 			margin-right: 10px;
-			min-height: 1500px;
+			min-height: 2500px;
 			min-width: 50px;
 			border-right: 1px solid #ccc;
 			padding-right: 0;
@@ -94,8 +94,9 @@ if (!empty($_GET['id'])) {
                 }*/
                 .Well {
                         border-bottom: 1px solid #ccc;
+                        min-width: 1500px;
                         padding-left: 150px;
-                        padding-top: 20px;
+                        padding-top: 15px;
                         padding-bottom: 20px;
                 }
                 /*.label-warning {
@@ -109,7 +110,24 @@ if (!empty($_GET['id'])) {
       <body>
       <?php if(isset($_SESSION['is_login'])){ ?>
             <header>
-                <h1 class="Well">Welcome to my homepage , <?php echo $_SESSION['nickname']; ?> !! </h1> 
+              <div class="row-fluid">
+                <div class="span6">
+                <h2 class="Well">Welcome to my homepage !! </h2> 
+                </div>
+                <div class="span2 offset4">
+                  </br>
+                  <div class="btn-group">
+                    <a class="btn btn-primary" href="#"><i class="icon-user icon-white"></i> <?php echo " ".$_SESSION['nickname']; ?></a>
+                    <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                       <li><a href="#"><i class="icon-pencil"></i> 계정변경</a></li>
+                       <li><a href="#"><i class="icon-trash"></i> 계정삭제</a></li>
+                       <li><a href="#"><i class="icon-wrench"></i> 친구관리</a></li>
+                       <li><a href="logout.php"><i class="icon-off"></i> 로그아웃</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
             </header>
             <nav>
                  <ul>
@@ -121,10 +139,8 @@ if (!empty($_GET['id'])) {
                 ?>
                  </ul>
                  <br/>
-                 <h4><a href="./input.php">목록추가</a></h4>
-                 <form action="./logout.php">
-                       <button class="btn-primary" type="submit">logout</button>
-                 </form>
+                 <h4><a href="./input.php">  목록추가</a></h4>
+               
             </nav>
             <article>
             <?php if(empty($_GET['id'])){ ?>
