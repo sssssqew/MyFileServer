@@ -14,7 +14,7 @@ $secure_ID = $human_Info['ID'];
 $secure_PASSWORD = $human_Info['PASSWORD'];
 
 if(!empty($_POST['id']) && !empty($_POST['pwd'])){
-    if(password_verify($_POST['id'],$secure_ID) == TRUE && password_verify($_POST['pwd'],$secure_PASSWORD) == TRUE){
+    if(($_POST['id'] == $secure_ID) && password_verify($_POST['pwd'],$secure_PASSWORD) == TRUE){
         $_SESSION['is_login'] = true;
         $_SESSION['nickname'] = $_POST['id'];
         header('Location: ./list.php');

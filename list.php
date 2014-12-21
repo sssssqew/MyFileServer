@@ -121,8 +121,8 @@ if (!empty($_GET['id'])) {
                     <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
                     <ul class="dropdown-menu">
                        <li><a href="#"><i class="icon-pencil"></i> 계정변경</a></li>
-                       <li><a href="#"><i class="icon-trash"></i> 계정삭제</a></li>
-                       <li><a href="#"><i class="icon-wrench"></i> 친구관리</a></li>
+                       <li><a href="delete_member.php"><i class="icon-trash"></i> 계정삭제</a></li>
+                       <li><a href="#friend" role="button" data-toggle="modal" data-backdrop="false"><i class="icon-wrench"></i> 친구관리</a></li>
                        <li><a href="logout.php"><i class="icon-off"></i> 로그아웃</a></li>
                     </ul>
                   </div>
@@ -143,6 +143,59 @@ if (!empty($_GET['id'])) {
                
             </nav>
             <article>
+			
+	        <?php
+			 if(!empty($_GET['search'])){
+			  $unserial_friend_user = unserialize($_GET['search']);
+			  //echo var_dump($unserial_friend_user)."</br>";
+			?>
+	
+		   <div id="friend" class="modal" role="dialog" tabindex="-1" aria-labelledby="friendLabel" aria-hidden="true">
+		     <div class="modal-header">
+			    <h4 id="friendLabel">친구관리란 (검색/추가/삭제)</h4>
+			 </div>
+			 <div class="modal-body">
+			    <form class="form-search" action="search_user.php" method="POST">
+				   <input type="text" name="searchString">
+				   <button class="btn" type="submit"><i class="icon-search"></i> 친구검색</button>
+				</form>
+			    <h5><?php 
+				     $cnt=0;
+				     while(isset($unserial_friend_user[$cnt])){
+						 echo $unserial_friend_user[$cnt]."</br>";
+						 $cnt = $cnt + 1;
+					 }
+					?>
+				</h5>
+			 </div>
+			 <div class="modal-footer">
+			      <button class="btn" data-dismiss="modal" aria-hidden="true">닫기</button>
+				  <button class="btn btn-danger">친구삭제</button>
+			 </div>
+		   </div>
+
+			<?php
+			 }
+			?>
+			
+			<!-- Modal friend -->
+			<div id="friend" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="friendLabel" aria-hidden="true">
+			   <div class="modal-header">
+			      <h4 id="friendLabel">친구관리란 (검색/추가/삭제)</h4>
+			   </div>
+			   <div class="modal-body">
+			      <form class="form-search" action="search_user.php" method="POST"> 
+				     <input type="text" name="searchString">
+					 <button class="btn" type="submit"><i class="icon-search"></i> 친구검색</button>
+				  </form>
+				  
+			   </div>
+			   <div class="modal-footer">
+			      <button class="btn" data-dismiss="modal" aria-hidden="true">닫기</button>
+				  <button class="btn btn-danger">친구삭제</button>
+			   </div>
+			</div>
+			
             <?php if(empty($_GET['id'])){ ?>
             <img src="ridebarstow.jpg" width="800" height="300"/>
             <?php } ?>

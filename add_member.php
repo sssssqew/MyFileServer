@@ -11,14 +11,14 @@ while($human_Info = mysqli_fetch_array($result,MYSQLI_BOTH)){
 $DB_ID = $human_Info['ID'];
 $DB_PASSWORD = $human_Info['PASSWORD'];
 
-if(password_verify($_POST['id'],$DB_ID) == TRUE){
+if($_POST['id'] == $DB_ID){
    $doubled = TRUE;
    header("Location: login.php?d={$doubled}");
    exit;
 }
 }
 /* 중복되는 회원이 없는 경우 */
-$secure_ID = password_hash($_POST['id'],PASSWORD_DEFAULT);
+$secure_ID = $_POST['id'];
 $secure_PASSWORD = password_hash($_POST['pwd'],PASSWORD_DEFAULT);
 
 $sql = "INSERT INTO memManage (ID, PASSWORD) VALUES ('".mysqli_real_escape_string($conn,$secure_ID)."','".
