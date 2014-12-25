@@ -18,7 +18,12 @@ while($user = mysqli_fetch_array($result,MYSQLI_BOTH)){
 	}
 } 
 $serial_friend_user = serialize($friend_user);
-header("Location: list.php?search={$serial_friend_user}");
+//echo var_dump($_GET['id']);
+if(!empty($_GET['id'])){
+	header("Location: list.php?id={$_GET['id']}&search={$serial_friend_user}");
+}else{
+	header("Location: list.php?search={$serial_friend_user}");
+}
 ?>
 
 

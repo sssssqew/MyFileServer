@@ -74,8 +74,8 @@
         <div class="row-fluid">
         <div class="span4">
           <form action="login_process.php" method="POST" >
-             <p><label>아이디    </label><input type="text" name="id" /></p>
-             <p><label>비밀번호  </label><input type="password" name="pwd" /></p>
+             <input type="text" class="input-large" placeholder="ID" name="id"/>
+             <input type="password" class="input-large" placeholder="PASSWORD" name="pwd"/>
              <button class="btn btn-small btn-success" type="submit">로그인</button>
           </form>
         </div>

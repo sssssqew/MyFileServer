@@ -1,7 +1,7 @@
 <?php
 /* 세션 시작 */
 session_start();
-
+global $unserial_friend_user;
 /* 서버접속 및 DB 선택 */
 $conn = mysqli_connect('localhost', 'root', '111111','member') or die("Error ".mysqli_error($conn));
 
@@ -16,6 +16,7 @@ $list_result = mysqli_query($conn,'SELECT * FROM memInfo');
 
 /* DB에서 모든 테이블 조회 */
 if (!empty($_GET['id'])) {
+	$page_ID = $_GET['id'];
 	$topic_result = mysqli_query($conn,'SELECT * FROM memInfo WHERE id = ' . mysqli_real_escape_string($conn,$_GET['id']));
 	$topic = mysqli_fetch_array($topic_result,MYSQLI_BOTH);
 
@@ -102,6 +103,18 @@ if (!empty($_GET['id'])) {
                 /*.label-warning {
                         color: black;
                 }*/
+                .closeForm {
+                        width: 56px;
+				}
+                .closeForm2 {
+					    width: 85px;
+				}
+				.tooltip.right .tooltip-inner{
+					height: 200px;
+					color: blue;
+					background-color: black;
+					border-bottom:5px solid red;
+				}
       </style>
       <!--meta name="viewport" content="width=device-width, initial-scale=1.0"-->
       <!--link href="../Bootstrap/css/bootstrap-responsive.css" rel="stylesheet"-->     
@@ -140,14 +153,16 @@ if (!empty($_GET['id'])) {
                  </ul>
                  <br/>
                  <h4><a href="./input.php">  목록추가</a></h4>
-               
+                 <h4><a href="./friendList.php"> 친구 리스트</a></h4>
             </nav>
             <article>
-			
+            
 	        <?php
-			 if(!empty($_GET['search'])){
+	         
+			 if((!empty($_GET['search'])) or !empty($_GET['not_s'])){
 			  $unserial_friend_user = unserialize($_GET['search']);
-			  //echo var_dump($unserial_friend_user)."</br>";
+				
+				 //$_GET['search'] = "";
 			?>
 	
 		   <div id="friend" class="modal" role="dialog" tabindex="-1" aria-labelledby="friendLabel" aria-hidden="true">
@@ -155,28 +170,96 @@ if (!empty($_GET['id'])) {
 			    <h4 id="friendLabel">친구관리란 (검색/추가/삭제)</h4>
 			 </div>
 			 <div class="modal-body">
-			    <form class="form-search" action="search_user.php" method="POST">
-				   <input type="text" name="searchString">
+			 <?php 
+			   if(!empty($_GET['id'])){
+			 ?>
+			    <form class="form-search" action="search_user.php?id=<?php echo $_GET['id']; ?>" method="POST">
+			 <?php
+			   }else{
+			 ?>
+				<form class="form-search" action="search_user.php" method="POST">
+			 <?php
+			   }
+			 ?>
+                   <input type="text" name="searchString">
 				   <button class="btn" type="submit"><i class="icon-search"></i> 친구검색</button>
 				</form>
+			    <?php
+			   if(!empty($_GET['id'])){
+			   	
+			   	 ?>
+			   	<form action="friendList.php?id=<?php echo $_GET['id']; ?>" method="POST">
+			   	<?php
+			   }else{
+			   	?>
+			   	<form action="friendList.php" method="POST">
+			   	<?php
+			   }
+			   ?>
+			   
 			    <h5><?php 
 				     $cnt=0;
+					  
 				     while(isset($unserial_friend_user[$cnt])){
-						 echo $unserial_friend_user[$cnt]."</br>";
+				     	 echo "<i class=\"icon-user icon-black\"></i>";
+						 echo " ".$unserial_friend_user[$cnt]." "."&nbsp;";
+						 echo "<input type=\"checkbox\" name=\"selected_users[]\" value=\"".$unserial_friend_user[$cnt]."\">"."</br>";
+						 echo "<input type=\"hidden\" name=\"all_search_users[".$cnt."]\" value=\"".$unserial_friend_user[$cnt]."\">"."</br>";
 						 $cnt = $cnt + 1;
 					 }
 					?>
 				</h5>
+				</br>
+				
+				<?php 
+				if(!empty($_GET['not_s']) and $_GET['not_s'] == TRUE){
+				?>
+				<button class="btn btn-primary" type="submit" data-toggle="tooltip" data-placement="right" data-trigger="click" title="추가할 친구를 선택하세요">친구추가</button>
+				<?php
+				$_GET['not_s'] = FALSE;
+				}else{
+				?>
+				<button class="btn btn-primary" type="submit">친구추가</button>
+		      <?php
+		      $_GET['not_s'] = FALSE;
+				}
+				?>		
+				</form>
+				
 			 </div>
+			 
 			 <div class="modal-footer">
+			   <div class="row"> 
+			    <div class="span1 offset4">
+				<?php 
+				if(!empty($_GET['id'])){
+				?>
+			    <form action="list.php?id=<?php echo $_GET['id']; ?>" class="closeForm" method="POST">
+				<?php
+				}else{
+				?>
+				<form action="list.php" class="closeForm">
+				<?php
+				}
+				?>
 			      <button class="btn" data-dismiss="modal" aria-hidden="true">닫기</button>
-				  <button class="btn btn-danger">친구삭제</button>
+                </form>
+				</div>
+				<div class="span1">
+				<form class="closeForm2">
+				  <button class="btn btn-primary" type="submit">친구추가</button>
+				</form>
+				</div>
+			   </div>  
+			   
 			 </div>
+			
 		   </div>
 
 			<?php
 			 }
 			?>
+			
 			
 			<!-- Modal friend -->
 			<div id="friend" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="friendLabel" aria-hidden="true">
@@ -184,18 +267,49 @@ if (!empty($_GET['id'])) {
 			      <h4 id="friendLabel">친구관리란 (검색/추가/삭제)</h4>
 			   </div>
 			   <div class="modal-body">
-			      <form class="form-search" action="search_user.php" method="POST"> 
+			   <?php 
+			   if(empty($_GET['id'])){
+			   ?>
+			      <form class="form-search" action="search_user.php" method="POST">
+               <?php
+			   }else{
+			   ?>
+				  <form class="form-search" action="search_user.php?id=<?php echo $_GET['id']; ?>" method="POST">
+			   <?php
+			   }
+			   ?>
 				     <input type="text" name="searchString">
 					 <button class="btn" type="submit"><i class="icon-search"></i> 친구검색</button>
 				  </form>
 				  
 			   </div>
 			   <div class="modal-footer">
+			      <div class="row"> 
+			    <div class="span1 offset4">
+				<?php 
+				if(!empty($_GET['id'])){
+				?>
+			    <form action="list.php?id=<?php echo $_GET['id']; ?>" class="closeForm" method="POST">
+				<?php
+				}else{
+				?>
+				<form action="list.php" class="closeForm">
+				<?php
+				}
+				?>
 			      <button class="btn" data-dismiss="modal" aria-hidden="true">닫기</button>
-				  <button class="btn btn-danger">친구삭제</button>
+                </form>
+				</div>
+				<div class="span1">
+				<form class="closeForm2">
+				  <button class="btn btn-primary" data-toggle="modal">친구추가</button>
+				</form>
+				</div>
+			   </div>
 			   </div>
 			</div>
 			
+			  
             <?php if(empty($_GET['id'])){ ?>
             <img src="ridebarstow.jpg" width="800" height="300"/>
             <?php } ?>
